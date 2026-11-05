@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-sunken: #efece5;
+  --color-ink: #121210;
+  --color-ink-soft: #3b3a36;
+  --color-muted: #69675f;
+  --color-line: #e3dfd6;
+  --color-line-strong: #cdc8bd;
+
+  --color-accent: #0d6b4f;
+  --color-accent-strong: #09533d;
+  --color-accent-soft: #e1eee7;
+
+  --color-amber: #8f5508;
+  --color-amber-soft: #f7ebd6;
+  --color-danger: #a3322a;
+  --color-danger-soft: #f6e2de;
+
+  --color-night: #11110f;
+  --color-night-raised: #1a1a17;
+  --color-night-line: #2d2c28;
+  --color-night-muted: #a19e95;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* Faint drafting grid behind the hero, faded out towards the edges. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 35%, transparent 78%);
+  opacity: 0.7;
+}
+
+/* Scroll reveal, driven by <Reveal>. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.8s var(--ease-out-soft),
+    transform 0.8s var(--ease-out-soft);
+}
+
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Activity rows in the hero console arrive one after another. */
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.row-in {
+  animation: row-in 0.6s var(--ease-out-soft) both;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .row-in,
+  .pulse-dot {
+    animation: none;
+  }
+}
